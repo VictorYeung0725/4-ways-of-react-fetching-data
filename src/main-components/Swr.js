@@ -18,10 +18,22 @@ const fetcher = (...args) => fetch(...args).then((response) => response.json());
 //NOTE
 //By using SWR, passing a {suspense:true} of loading indicator
 
+//NOTE SWR can also handling Error
+
 function Swr() {
-  const { data } = useSWR('https://dog.ceo/api/breeds/image/random', fetcher, {
-    suspense: true,
-  });
+  const { data, error } = useSWR(
+    'https://dog.ceo/api/breeds/image/random',
+    fetcher,
+    {
+      suspense: true,
+    }
+  );
+
+  if (error) {
+    console.log(error);
+    return <h2>There was an error</h2>;
+  }
+
   return (
     <div>
       <img width={500} src={data?.message} />
